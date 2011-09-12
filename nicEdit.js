@@ -268,7 +268,7 @@ var nicEditorConfig = bkClass.extend({
 		'outdent' : {name : __('Remove Indent'), command : 'outdent', noActive : true},
 		'hr' : {name : __('Horizontal Rule'), command : 'insertHorizontalRule', noActive : true}
 	},
-	iconsPath : '../nicEditorIcons.gif',
+	iconsPath : '../images/nicEditorIcons.gif',
 	buttonList : ['save','bold','italic','underline','left','center','right','justify','ol','ul','fontSize','fontFamily','fontFormat','indent','outdent','image','upload','link','unlink','forecolor','bgcolor'],
 	iconList : {"bgcolor":1,"forecolor":2,"bold":3,"center":4,"hr":5,"indent":6,"italic":7,"justify":8,"left":9,"ol":10,"outdent":11,"removeformat":12,"right":13,"save":24,"strikethrough":15,"subscript":16,"superscript":17,"ul":18,"underline":19,"image":20,"link":21,"unlink":22,"close":23,"arrow":25}
 	
@@ -475,11 +475,20 @@ var nicEditorInstance = bkClass.extend({
 		return (window.getSelection) ? window.getSelection() : document.selection;	
 	},
 	
-	getRng : function() {
-		var s = this.getSel();
-		if(!s) { return null; }
-		return (s.rangeCount > 0) ? s.getRangeAt(0) : s.createRange();
-	},
+        getRng : function() {
+            var s = this.getSel();
+            var rng;        
+        
+            if(!s) { return null; } 
+            if (s.rangeCount > 0) {
+                    rng = s.getRangeAt(0);
+                } else if ( typeof s.createRange === 'undefined' ) {
+                        rng = document.createRange();
+                    } else {
+                            rng = s.createRange(); 
+                        }       
+            return rng;
+         },
 	
 	selRng : function(rng,s) {
 		if(window.getSelection) {
